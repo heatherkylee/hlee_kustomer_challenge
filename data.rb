@@ -5,7 +5,7 @@ class CustomerDataImport
   
   # import data from csv file
   def initialize
-    p @customers = CSV.read('data.csv', headers: true).to_a
+    @customers = CSV.read('data.csv', headers: true).to_a
   end
 
   # define type of phone number (work) through attribute name from data.csv
@@ -81,12 +81,17 @@ class CustomerDataImport
         # tags: [
         # ]
       }
-      # @formatted_data << JSON.pretty_generate(customer_data)
+      # p @formatted_data << JSON.pretty_generate(customer_data)
 
-      @formatted_data << customer_data.to_json
+      @formatted_data << customer_data
     end
-    puts cleaned_data = @formatted_data
+    File.open("data.json","w") do |f|
+        f.write(@formatted_data.to_json)
+      end
+      File.open("nojsondata.json","w") do |f|
+        f.write(@formatted_data)
+      end
   end
 end 
 
-kustomer_data = CustomerDataImport.new
+kustomer_data = CustomerDataImport.new.import_data
