@@ -31,7 +31,7 @@ class CustomerDataImport
 
    #assign .csv data to attributes in nested array structure that is accepted by Kustomer API
   def import_data
-    @output = []
+    @formatted_data = []
     @customers.shift
     @customers.each do |customer|
       customer_data = {
@@ -78,10 +78,10 @@ class CustomerDataImport
         # tags: [
         # ]
       }
-      @output << JSON.pretty_generate(customer_data)
+      @formatted_data << JSON.pretty_generate(customer_data)
     end
-    puts cleaned_data = @output
+    puts cleaned_data = @formatted_data
   end
 end 
 
-formatted_data = CustomerDataExport.new.import_data
+kustomer_data = CustomerDataExport.new.import_data
