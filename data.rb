@@ -1,8 +1,11 @@
+require 'csv'
+require 'json'
+
 class CustomerDataImport
   
   # import data from csv file
   def initialize
-    @customers = CSV.read('sample1.csv', headers: true).to_a
+    p @customers = CSV.read('data.csv', headers: true).to_a
   end
 
   # define type of phone number (work) through attribute name from data.csv
@@ -86,4 +89,4 @@ class CustomerDataImport
   end
 end 
 
-kustomer_data = CustomerDataImport.new.import_data
+kustomer_data = CustomerDataImport.new
