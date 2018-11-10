@@ -78,10 +78,12 @@ class CustomerDataImport
         # tags: [
         # ]
       }
-      @formatted_data << JSON.pretty_generate(customer_data)
+      # @formatted_data << JSON.pretty_generate(customer_data)
+
+      @formatted_data << customer_data.to_json
     end
     puts cleaned_data = @formatted_data
   end
 end 
 
-kustomer_data = CustomerDataExport.new.import_data
+kustomer_data = CustomerDataImport.new.import_data
