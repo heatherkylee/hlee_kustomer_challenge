@@ -54,7 +54,7 @@ CSV.foreach("data.csv", headers: true, header_converters: :symbol) do |row|
     birthdayAt: row[:birthday]
   }
   array << @convert_to_json_hash
-  File.open("data3.json","a") do |f|
+  File.open("data4.json","w") do |f|
     f.write(array.to_json)
   end
 end
