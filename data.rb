@@ -28,4 +28,60 @@ class CustomerDataImport
     end
     @home_phone_type
   end
-end
+
+   #assign .csv data to attributes in nested array structure that is accepted by Kustomer API
+  def import_data
+    @output = []
+    @customers.shift
+    @customers.each do |customer|
+      customer_data = {
+        name: "#{customer[0]} #{customer[1]}",
+        emails: [
+          {
+            type: "",
+            email: customer[2]
+          }
+        ],
+        phones: [
+          {
+            type: @home_phone_type,
+            phone: customer[4]
+          },
+          {
+            type: @work_phone_type,
+            phone: customer[5]
+          }
+        ],
+        type: customer[6],
+        birthdayAt: customer[3]
+        # socials: [
+        #   {
+        #     type: "",
+        #     userid: "",
+        #     username: "",
+        #     url: ""
+        #   }
+        # ],
+        # urls: [
+        #   {
+        #     url: ""
+        #   }
+        # ],
+        # locations: [
+        #   {
+        #     type: "",
+        #     address: ""
+        #   }
+        # ],
+        # locale: "",
+        # gender: "",
+        # tags: [
+        # ]
+      }
+      @output << JSON.pretty_generate(customer_data)
+    end
+    puts cleaned_data = @output
+  end
+end 
+
+formatted_data = CustomerDataExport.new.import_data
