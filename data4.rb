@@ -19,23 +19,26 @@ require 'date'
     type: "",
     phone: ""
   }],
-  tags: [""],
+  tags: [],
   birthdayAt: "" 
 }
 
 CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|  
   row.to_h
 
+  # puts row
+  # p "*" * 10
+
   # create full name
   if row[:firstname] == nil  && row[:lastname] == nil
-    true
+    @fullname = nil
   else
     @fullname = "#{row[:firstname]} #{row[:lastname]}"
   end
 
   # parse birthday to date-time format
   if row[:birthday] == nil
-    true
+    @birthday_at = nil
   else
     birthday = row[:birthday]
     format = "%a %b %d %Y %H:%M:%S %Z"
@@ -44,7 +47,6 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
 
   # create home phone type
   if row[:homephone] == nil
-    true
     @phonetype_home = nil
     @phonenumber_home = nil
   else
@@ -54,9 +56,8 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
 
   # create work phone type
   if row[:workphone] == nil
-    true
-    @phonetype_work = ""
-    @phonenumber_work = ""
+    @phonetype_work = nil
+    @phonenumber_work = nil
   else
     @phonetype_work = "work"
     @phonenumber_work = row[:workphone]
@@ -64,8 +65,7 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
 # 
  #create customer tag
   if row[:customertype] == nil
-    true
-    @tag = ""
+    @tag = nil
   else
     @tag = row[:customertype]
   end
@@ -93,9 +93,12 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
   }
 
   # p json_data = @convert_to_json_hash
+  # puts JSON.pretty_generate(@convert_to_json_hash)
+
   # File.open("data4.json","a") do |f|
   #   f.write(@convert_to_json_hash.to_json)
   # end
+  
   url = URI("https://api.kustomerapp.com/v1/customers")
 
   http = Net::HTTP.new(url.host, url.port)
@@ -105,7 +108,7 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
   request = Net::HTTP::Post.new(url)
   request["authorization"] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZTNiNGJlYmZiYTU0MDA4ZTVjNGYxOSIsInVzZXIiOiI1YmUzYjRiZTNjODAyNjAwMTkzMGJhMDMiLCJvcmciOiI1YmUzNTJiNDNjODAyNjAwMTkyOGYzNjciLCJvcmdOYW1lIjoienp6LWhlYXRoZXIiLCJ1c2VyVHlwZSI6Im1hY2hpbmUiLCJyb2xlcyI6WyJvcmcuYWRtaW4iLCJvcmcudXNlciJdLCJleHAiOjE1NDIyNTQzOTcsImF1ZCI6InVybjpjb25zdW1lciIsImlzcyI6InVybjphcGkiLCJzdWIiOiI1YmUzYjRiZTNjODAyNjAwMTkzMGJhMDMifQ.jXv1zUdGtB_wbM8ySbitW4HHyfy4qytP4tqF5hM72nY'
   request["content-type"] = 'application/json'
-  request.body = (@convert_to_json_hash.to_json)
+  request.body = (JSON.pretty_generate(@convert_to_json_hash))
 
   response = http.request(request)
   puts response.read_body
