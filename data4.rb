@@ -16,20 +16,14 @@ require 'date'
   ],
   phones: [
   {
-    type: "home",
-    phone: ""
-  },
-  {
-    type: "work",
+    type: "",
     phone: ""
   }],
-  tags: [
-    type: ""
-  ],
+  tags: [""],
   birthdayAt: "" 
 }
 
-CSV.foreach("data.csv", headers: true, header_converters: :symbol) do |row|  
+CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|  
   row.to_h
 
   # create full name
@@ -48,32 +42,57 @@ CSV.foreach("data.csv", headers: true, header_converters: :symbol) do |row|
     @birthday_at = DateTime.strptime(birthday, format) 
   end
 
+  # create home phone type
+  if row[:homephone] == nil
+    true
+    @phonetype_home = nil
+    @phonenumber_home = nil
+  else
+    @phonenumber_home = row[:homephone]
+    @phonetype_home = "home"
+  end  
+
+  # create work phone type
+  if row[:workphone] == nil
+    true
+    @phonetype_work = ""
+    @phonenumber_work = ""
+  else
+    @phonetype_work = "work"
+    @phonenumber_work = row[:workphone]
+  end
+# 
+ #create customer tag
+  if row[:customertype] == nil
+    true
+    @tag = ""
+  else
+    @tag = row[:customertype]
+  end
+
   @convert_to_json_hash =
     {
-    name: @fullname.to_s,
+    name: @fullname,
     emails: [
       {
-      email: row[:email].to_s
+      email: row[:email]
       }
     ],
-    phones: [
+    phones:[
     {
-      type: "home",
-      phone: row[:homephone].to_s
+      type: @phonetype_home,
+      phone: @phonenumber_home
     },
     {
-      type: "work",
-      phone: row[:workphone].to_s
+      type: @phonetype_work,
+      phone: @phonenumber_work
     }
   ],
-    tags: [
-      row[:customertype].to_s
-    ],
+    tags: [@tag],
     birthdayAt: @birthday_at
   }
 
-  @convert_to_json_hash
-  json_data = @convert_to_json_hash
+  # p json_data = @convert_to_json_hash
   # File.open("data4.json","a") do |f|
   #   f.write(@convert_to_json_hash.to_json)
   # end
