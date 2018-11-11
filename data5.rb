@@ -5,17 +5,28 @@ require 'net/http'
 require 'openssl'
 require 'date'
 
-CSV.foreach("sample2.csv", headers: true, header_converters: :symbol) do |row|  
+CSV.foreach("data_notuploaded.csv", headers: true, header_converters: :symbol) do |row|  
   
   row.to_h
 
   @tap_hash = Hash.new.tap do |hash|
-    hash["name"] ="#{row[:firstname]} #{row[:lastname]}" if row[:firstname] && row[:lastname] 
+    # create fullname
+    if row[:firstname] && row[:lastname] 
+      hash["name"] ="#{row[:firstname]} #{row[:lastname]}" 
+    elsif row[:firstname]
+      hash["name"] = row[:firstname]
+    elsif row[:lastname] 
+    hash["name"] = row[:lastname] 
+    end
+    #end of create fullname
+
     hash["emails"] = Array.new().push(
         Hash.new.tap do |email|
           email["email"] = row[:email] if row[:email]
         end
       ) if row[:email]
+
+    # phone numbers
     if row[:homephone] && row[:workphone]
       hash["phones"] = Array.new()
       # create home phone number
@@ -50,18 +61,13 @@ CSV.foreach("sample2.csv", headers: true, header_converters: :symbol) do |row|
       end
       hash["phones"] << work
     end
+    # end phone numbers
+
     hash["tags"] = [] << row[:customertype] if row[:customertype]
     hash["birthdayAt"] = DateTime.strptime(row[:birthday], "%a %b %d %Y %H:%M:%S %Z") if row[:birthday]
   end
 
-  @json_data = JSON.pretty_generate(@tap_hash)
-  # puts @tap_hash.to_json
-  # p "*" * 10
-
-  # File.open("data5.json","a") do |f|
-  #   f.write(@json_data)
-  # end
-  
+  # puts @json_data = JSON.pretty_generate(@tap_hash)
 
   # upload data to server one at a time
 
@@ -72,11 +78,11 @@ CSV.foreach("sample2.csv", headers: true, header_converters: :symbol) do |row|
   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
   request = Net::HTTP::Post.new(url)
-  request["authorization"] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZTNiNGJlYmZiYTU0MDA4ZTVjNGYxOSIsInVzZXIiOiI1YmUzYjRiZTNjODAyNjAwMTkzMGJhMDMiLCJvcmciOiI1YmUzNTJiNDNjODAyNjAwMTkyOGYzNjciLCJvcmdOYW1lIjoienp6LWhlYXRoZXIiLCJ1c2VyVHlwZSI6Im1hY2hpbmUiLCJyb2xlcyI6WyJvcmcuYWRtaW4iLCJvcmcudXNlciJdLCJleHAiOjE1NDIyNTQzOTcsImF1ZCI6InVybjpjb25zdW1lciIsImlzcyI6InVybjphcGkiLCJzdWIiOiI1YmUzYjRiZTNjODAyNjAwMTkzMGJhMDMifQ.jXv1zUdGtB_wbM8ySbitW4HHyfy4qytP4tqF5hM72nY'
+  request["authorization"] = 'Bearer API_KEY'
   request["content-type"] = 'application/json'
   request.body = (@json_data)
-  puts @json_data = JSON.pretty_generate(@tap_hash)
-  p "*" * 10
+  # puts @json_data = JSON.pretty_generate(@tap_hash)
+  # p "*" * 10
   response = http.request(request)
   puts response.read_body
 end
