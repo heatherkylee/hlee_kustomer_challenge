@@ -1,0 +1,98 @@
+{
+  "emails": [
+    {
+      "email": "Holly_Ruecker@fakegmail.com"
+    }
+  ],
+  "phones": [
+    {
+      "type": "home",
+      "phone": "1-305-555-3789 x95418"
+    },
+    {
+      "type": "work",
+      "phone": "(845) 555-6545 x90312"
+    }
+  ],
+  "tags": [
+    "regular"
+  ]
+}{
+  "name": "Caden Marks",
+  "emails": [
+    {
+      "email": "Cheyenne60@fakeyahoo.com"
+    }
+  ],
+  "phones": [
+    {
+      "type": "home",
+      "phone": "(375) 950-8158 x940"
+    },
+    {
+      "type": "work",
+      "phone": "768-981-6345 x90600"
+    }
+  ],
+  "tags": [
+    "regular"
+  ],
+  "birthdayAt": "2017-03-26T21:10:22-04:00"
+}{
+  "name": "Amani O'Hara",
+  "emails": [
+    {
+      "email": "Celine_Stoltenberg@fakehotmail.com"
+    }
+  ],
+  "phones": [
+    {
+    },
+    {
+      "type": "work",
+      "phone": "1-155-956-8519"
+    }
+  ],
+  "tags": [
+    "regular"
+  ],
+  "birthdayAt": "2016-11-05T18:00:31-04:00"
+}{
+  "emails": [
+    {
+      "email": "Ervin88@fakehotmail.com"
+    }
+  ],
+  "phones": [
+    {
+      "type": "home",
+      "phone": "1-407-624-4354"
+    },
+    {
+      "type": "work",
+      "phone": "754-931-5537"
+    }
+  ],
+  "tags": [
+    "customer"
+  ],
+  "birthdayAt": "2016-10-13T00:07:28-04:00"
+}{
+  "name": "Henry Reilly",
+  "emails": [
+    {
+      "email": "Donnie_Kuhn5@fakeyahoo.com"
+    }
+  ],
+  "phones": [
+    {
+      "type": "home",
+      "phone": "251-100-2531 x484"
+    },
+    {
+      "type": "work",
+      "phone": "463.292.6089"
+    }
+  ],
+  "birthdayAt": "2016-06-14T18:50:22-04:00"
+}

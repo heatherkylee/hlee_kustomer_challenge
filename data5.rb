@@ -41,13 +41,15 @@ CSV.foreach("sample1.csv", headers: true, header_converters: :symbol) do |row|
     hash["birthdayAt"] = DateTime.strptime(row[:birthday], "%a %b %d %Y %H:%M:%S %Z") if row[:birthday]
   end
 
-  # p json_data = @tap_hash.to_json
   puts JSON.pretty_generate(@tap_hash)
 
   File.open("data5.json","a") do |f|
     f.write(@json_data)
   end
   
+
+  # upload data to server one at a time
+
   # url = URI("https://api.kustomerapp.com/v1/customers")
 
   # http = Net::HTTP.new(url.host, url.port)
